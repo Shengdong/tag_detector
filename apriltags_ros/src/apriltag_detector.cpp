@@ -35,7 +35,7 @@ AprilTagDetector::AprilTagDetector(ros::NodeHandle& nh, ros::NodeHandle& pnh): i
   AprilTags::TagCodes tag_codes = AprilTags::tagCodes36h11;
   tag_detector_= boost::shared_ptr<AprilTags::TagDetector>(new AprilTags::TagDetector(tag_codes));
   tag_detector_->init(640, 480);
-  image_sub_ = it_.subscribe("image_rect", 1, &AprilTagDetector::imageCb, this);
+  image_sub_ = it_.subscribe("/image_rect", 1, &AprilTagDetector::imageCb, this);
   image_pub_ = it_.advertise("tag_detections_image", 1);
   detections_pub_ = nh.advertise<AprilTagDetectionArray>("tag_detections", 1);
   pose_pub_ = nh.advertise<geometry_msgs::PoseArray>("tag_detections_pose", 1);
@@ -47,9 +47,8 @@ AprilTagDetector::~AprilTagDetector(){
 void AprilTagDetector::imageCb(const sensor_msgs::ImageConstPtr& msg){
   cv_bridge::CvImagePtr cv_ptr;
   try{
-//    cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::RGB8);
 
-    cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO8);
+      cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO8);
   }
   catch (cv_bridge::Exception& e){
     ROS_ERROR("cv_bridge exception: %s", e.what());
@@ -58,12 +57,11 @@ void AprilTagDetector::imageCb(const sensor_msgs::ImageConstPtr& msg){
   cv_ptr->header.stamp = ros::Time::now();
   cv::Mat gray;
   cv_ptr->image.copyTo(gray);
-//  cv::cvtColor(cv_ptr->image, gray, CV_BGR2GRAY);
   std::vector<AprilTags::TagDetection>	detections = tag_detector_->extractTags(gray);
   ROS_DEBUG("%d tag detected", (int)detections.size());
 
-  double fx = 675.67;
-  double fy = 675.67;
+  double fx = 554.2562397718481;
+  double fy = 554.2562397718481;
   double px = 320;
   double py = 240;
 
