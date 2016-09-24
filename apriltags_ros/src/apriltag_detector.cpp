@@ -60,8 +60,8 @@ void AprilTagDetector::imageCb(const sensor_msgs::ImageConstPtr& msg){
   std::vector<AprilTags::TagDetection>	detections = tag_detector_->extractTags(gray);
   ROS_DEBUG("%d tag detected", (int)detections.size());
 
-  double fx = 554.2562397718481;
-  double fy = 554.2562397718481;
+  double fx = 675.6756757;
+  double fy = 675.6756757;
   double px = 320;
   double py = 240;
 
