@@ -29,17 +29,27 @@ class AprilTagDetector{
   ~AprilTagDetector();
  private:
   void imageCb(const sensor_msgs::ImageConstPtr& msg);
+  void imageCb1(const sensor_msgs::ImageConstPtr& msg);
   std::map<int, AprilTagDescription> parse_tag_descriptions(XmlRpc::XmlRpcValue& april_tag_descriptions);
 
  private:
   std::map<int, AprilTagDescription> descriptions_;
   std::string sensor_frame_id_;
   image_transport::ImageTransport it_;
+
   image_transport::Subscriber image_sub_;
   image_transport::Publisher image_pub_;
   ros::Publisher detections_pub_;
   ros::Publisher pose_pub_;
+
+  image_transport::Subscriber image_sub_1;
+  image_transport::Publisher image_pub_1;
+  ros::Publisher detections_pub_1;
+  ros::Publisher pose_pub_1;
+
   tf::TransformBroadcaster tf_pub_;
+  tf::TransformBroadcaster tf_pub_1;
+
   boost::shared_ptr<AprilTags::TagDetector> tag_detector_;
 };
 
